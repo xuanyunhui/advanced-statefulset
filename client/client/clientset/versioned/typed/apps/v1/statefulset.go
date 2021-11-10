@@ -21,6 +21,8 @@ package v1
 import (
 	"context"
 	"time"
+	"fmt"
+	json "encoding/json"
 
 	v1 "github.com/pingcap/advanced-statefulset/client/apis/apps/v1"
 	scheme "github.com/pingcap/advanced-statefulset/client/client/clientset/versioned/scheme"
