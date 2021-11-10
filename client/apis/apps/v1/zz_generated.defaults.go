@@ -91,9 +91,6 @@ func SetObjectDefaults_StatefulSet(in *StatefulSet) {
 	for i := range in.Spec.Template.Spec.InitContainers {
 		a := &in.Spec.Template.Spec.InitContainers[i]
 		corev1.SetDefaults_Container(a)
-		for j := range a.Ports {
-			b := &a.Ports[j]
-			corev1.SetDefaults_ContainerPort(b)
 		}
 		for j := range a.Env {
 			b := &a.Env[j]
@@ -139,10 +136,6 @@ func SetObjectDefaults_StatefulSet(in *StatefulSet) {
 	for i := range in.Spec.Template.Spec.Containers {
 		a := &in.Spec.Template.Spec.Containers[i]
 		corev1.SetDefaults_Container(a)
-		for j := range a.Ports {
-			b := &a.Ports[j]
-			corev1.SetDefaults_ContainerPort(b)
-		}
 		for j := range a.Env {
 			b := &a.Env[j]
 			if b.ValueFrom != nil {
@@ -186,10 +179,6 @@ func SetObjectDefaults_StatefulSet(in *StatefulSet) {
 	}
 	for i := range in.Spec.Template.Spec.EphemeralContainers {
 		a := &in.Spec.Template.Spec.EphemeralContainers[i]
-		for j := range a.EphemeralContainerCommon.Ports {
-			b := &a.EphemeralContainerCommon.Ports[j]
-			corev1.SetDefaults_ContainerPort(b)
-		}
 		for j := range a.EphemeralContainerCommon.Env {
 			b := &a.EphemeralContainerCommon.Env[j]
 			if b.ValueFrom != nil {
