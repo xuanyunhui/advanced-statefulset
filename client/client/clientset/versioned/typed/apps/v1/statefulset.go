@@ -200,6 +200,32 @@ func (c *statefulSets) Patch(ctx context.Context, name string, pt types.PatchTyp
 	return
 }
 
+// Apply takes the given apply declarative configuration, applies it and returns the applied statefulSet.
+func (c *statefulSets) Apply(ctx context.Context, statefulSet *appsv1.StatefulSetApplyConfiguration, opts metav1.ApplyOptions) (result *v1.StatefulSet, err error) {
+	if statefulSet == nil {
+		return nil, fmt.Errorf("statefulSet provided to Apply must not be nil")
+	}
+	patchOpts := opts.ToPatchOptions()
+	data, err := json.Marshal(statefulSet)
+	if err != nil {
+		return nil, err
+	}
+	name := statefulSet.Name
+	if name == nil {
+		return nil, fmt.Errorf("statefulSet.Name must be provided to Apply")
+	}
+	result = &v1.StatefulSet{}
+	err = c.client.Patch(types.ApplyPatchType).
+		Namespace(c.ns).
+		Resource("statefulsets").
+		Name(*name).
+		VersionedParams(&patchOpts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
+}
+
 // GetScale takes name of the statefulSet, and returns the corresponding autoscalingv1.Scale object, and an error if there is any.
 func (c *statefulSets) GetScale(ctx context.Context, statefulSetName string, options metav1.GetOptions) (result *autoscalingv1.Scale, err error) {
 	result = &autoscalingv1.Scale{}
