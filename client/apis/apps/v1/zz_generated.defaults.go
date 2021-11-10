@@ -91,7 +91,6 @@ func SetObjectDefaults_StatefulSet(in *StatefulSet) {
 	for i := range in.Spec.Template.Spec.InitContainers {
 		a := &in.Spec.Template.Spec.InitContainers[i]
 		corev1.SetDefaults_Container(a)
-		}
 		for j := range a.Env {
 			b := &a.Env[j]
 			if b.ValueFrom != nil {
